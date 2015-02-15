@@ -1,20 +1,45 @@
-# Analysis of activity monitoring data
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Are there differences in activity patterns between weekdays and weekends?
 ### (Assuming that the data file activity.csv is in the working directory)
 
+## Loading and preprocessing the data
+```{r,echo=TRUE}
+activity <- read.csv("activity.csv") 
+```
 
+## What is mean total number of steps taken per day?  
 
 A histogram of the total number of steps taken each day is followed.  
 
 ```{r,echo=TRUE, results="asis", fig.height=4}
-activity <- read.csv("activity.csv")  
 StepsPerDay <- tapply(activity$steps, activity$date, sum, na.rm = TRUE)  
 StepsPerDay <- as.data.frame(StepsPerDay)  
-
 library(ggplot2)  
 ggplot(StepsPerDay, aes(x=StepsPerDay)) + geom_histogram(binwidth=1000, colour="black", fill="white")  
 ```
-## Mean total number of steps taken per day
 
 With the following code, we could get the mean of the total number of steps taken per day.
 ```{r,echo=TRUE}
@@ -26,12 +51,11 @@ medianperday
 
 The mean of the total number of steps taken per day is `r meanperday`. The median of the total number of steps taken per day is `r medianperday`.  
 
-## Average daily activity pattern
+## What is the average daily activity pattern?
 
 The time series plot of average daily activity pattern is followed.  
 
-```{r,echo=TRUE}
-# get the mean steps of each interval across all days  
+```{r,echo=TRUE} 
 IntervalAverage <- tapply(activity$steps, factor(activity$interval), mean, na.rm = TRUE)  
 IntervalAverage <- data.frame(Average=IntervalAverage, interval = as.numeric(names(IntervalAverage)))  
 ggplot(IntervalAverage, aes(x=interval, y=Average)) + geom_line()  
@@ -86,7 +110,7 @@ In the imputed data set, the mean of the total number of steps taken per day is 
 They are different from these estimated in the first part of the assignment. The mean and median of the total number of steps taken per day in the imputed data set are larger than these in the original data set. It is because in the previous data set, NAs contribute zero step to the total steps in that day, while imputed values contribute steps larger than zero. Therefore, mean increases and median tends to increase.
 
 
-## Differences in activity patterns between weekdays and weekends
+## Are there differences in activity patterns between weekdays and weekends?
 
 The following panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 
