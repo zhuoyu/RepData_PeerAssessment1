@@ -1,23 +1,49 @@
-# Analysis of activity monitoring data
+---
+title: "Reproducible Research: Peer Assessment 1"
+output: 
+  html_document:
+    keep_md: true
+---
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+## Are there differences in activity patterns between weekdays and weekends?
 ### (Assuming that the data file activity.csv is in the working directory)
 
+## Loading and preprocessing the data
 
+```r
+activity <- read.csv("activity.csv") 
+```
+
+## What is mean total number of steps taken per day?  
 
 A histogram of the total number of steps taken each day is followed.  
 
 
 ```r
-activity <- read.csv("activity.csv")  
 StepsPerDay <- tapply(activity$steps, activity$date, sum, na.rm = TRUE)  
 StepsPerDay <- as.data.frame(StepsPerDay)  
-
 library(ggplot2)  
 ggplot(StepsPerDay, aes(x=StepsPerDay)) + geom_histogram(binwidth=1000, colour="black", fill="white")  
 ```
 
-![plot of chunk unnamed-chunk-1](figure/unnamed-chunk-1-1.png) 
-## Mean total number of steps taken per day
+![plot of chunk unnamed-chunk-2](figure/unnamed-chunk-2-1.png) 
 
 With the following code, we could get the mean of the total number of steps taken per day.
 
@@ -41,19 +67,18 @@ medianperday
 
 The mean of the total number of steps taken per day is 9354.23. The median of the total number of steps taken per day is 10395.  
 
-## Average daily activity pattern
+## What is the average daily activity pattern?
 
 The time series plot of average daily activity pattern is followed.  
 
 
 ```r
-# get the mean steps of each interval across all days  
 IntervalAverage <- tapply(activity$steps, factor(activity$interval), mean, na.rm = TRUE)  
 IntervalAverage <- data.frame(Average=IntervalAverage, interval = as.numeric(names(IntervalAverage)))  
 ggplot(IntervalAverage, aes(x=interval, y=Average)) + geom_line()  
 ```
 
-![plot of chunk unnamed-chunk-3](figure/unnamed-chunk-3-1.png) 
+![plot of chunk unnamed-chunk-4](figure/unnamed-chunk-4-1.png) 
 
 We can observe the maximum numbers of steps in the plot, but when the maxumum occured is not easy to tell. We can get it using the following code.
 
@@ -110,7 +135,7 @@ StepsPerDay_imputed <- as.data.frame(StepsPerDay_imputed)
 ggplot(StepsPerDay_imputed, aes(x=StepsPerDay_imputed)) + geom_histogram(binwidth=1000, colour="black", fill="white")  
 ```
 
-![plot of chunk unnamed-chunk-6](figure/unnamed-chunk-6-1.png) 
+![plot of chunk unnamed-chunk-7](figure/unnamed-chunk-7-1.png) 
  
 In the imputed data set, the mean of the total number of steps taken per day should be different from the mean in the original data set. 
 
@@ -136,7 +161,7 @@ In the imputed data set, the mean of the total number of steps taken per day is 
 They are different from these estimated in the first part of the assignment. The mean and median of the total number of steps taken per day in the imputed data set are larger than these in the original data set. It is because in the previous data set, NAs contribute zero step to the total steps in that day, while imputed values contribute steps larger than zero. Therefore, mean increases and median tends to increase.
 
 
-## Differences in activity patterns between weekdays and weekends
+## Are there differences in activity patterns between weekdays and weekends?
 
 The following panel plot containing a time series plot (i.e. type = "l") of the 5-minute interval (x-axis) and the average number of steps taken, averaged across all weekday days or weekend days (y-axis).
 
@@ -160,4 +185,4 @@ activity_new_weekdays_interval_average$interval <- as.numeric(c(interval1, inter
 ggplot(data=activity_new_weekdays_interval_average, aes(x=interval, y=Average))  + geom_line() + facet_wrap( ~ day, ncol=1)  
 ```
 
-![plot of chunk unnamed-chunk-8](figure/unnamed-chunk-8-1.png) 
+![plot of chunk unnamed-chunk-9](figure/unnamed-chunk-9-1.png) 
